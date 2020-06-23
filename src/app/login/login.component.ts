@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { User } from '../user';
 import { LoginService } from '../login.service';
+import { Response } from '../response';
 
 @Component({
   selector: 'app-login',
@@ -34,8 +35,12 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.authService.signIn(this.authForm.value);
-    this.router.navigateByUrl('/home');
+    this.authService.signIn(this.authForm.value)
+      .subscribe((res: Response) => {
+        if(res.status === true) {
+          this.router.navigateByUrl('/home');
+        }
+      })
   }
 
 }

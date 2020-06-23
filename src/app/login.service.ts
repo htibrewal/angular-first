@@ -6,6 +6,7 @@ import { tap, catchError } from 'rxjs/operators';
 
 import { User } from './user';
 import { Response } from './response';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,17 @@ import { Response } from './response';
 export class LoginService {
   private AUTH_SERVER = "http://localhost:8000";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+    private messageService: MessageService) { }
 
   public signIn(user: User): Observable<Response> {
     return this.httpClient.post<Response>(`${this.AUTH_SERVER}/login`, user)
       .pipe(
         tap((res: Response) => {
-          if(res.status) {
+          const {status, message} = res;
+          this.log(message);
+
+          if(status) {
             localStorage.setItem('ACCESS_TOKEN', "access_token")
           }
         }),
@@ -32,5 +37,10 @@ export class LoginService {
 
   public logout(): void {
     localStorage.removeItem('ACCESS_TOKEN');
+    this.log('Logout Successful');
+  }
+
+  log(message: string): void {
+    this.messageService.add(`Login Service: ${message}`);
   }
 }

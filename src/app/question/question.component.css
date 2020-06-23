@@ -2,7 +2,7 @@
   margin: 0 0 2em 0;
   list-style-type: none;
   padding: 0;
-  width: 15em;
+  width: 75em;
 }
 
 .questions li {
@@ -70,4 +70,9 @@ button.delete {
   top: -32px;
   background-color: gray !important;
   color: white;
+}
+
+button#logout {
+  float: right;
+  font-size: large;
 }
