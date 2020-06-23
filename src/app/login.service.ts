@@ -2,27 +2,28 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 import { User } from './user';
+import { Response } from './response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  private AUTH_SERVER = "";
+  private AUTH_SERVER = "http://localhost:8000";
 
   constructor(private httpClient: HttpClient) { }
 
-  // public signIn(user: User): Observable<User> {
-  //   return this.httpClient.post<User>(`${this.AUTH_SERVER}/login`, user)
-  //     .pipe(
-  //       tap(_ => localStorage.setItem('ACCESS_TOKEN', "access_token")),
-  //     );
-  // }
-
-  public signIn(user: User): void {
-    localStorage.setItem('ACCESS_TOKEN', "access_token");
+  public signIn(user: User): Observable<Response> {
+    return this.httpClient.post<Response>(`${this.AUTH_SERVER}/login`, user)
+      .pipe(
+        tap((res: Response) => {
+          if(res.status) {
+            localStorage.setItem('ACCESS_TOKEN', "access_token")
+          }
+        }),
+      );
   }
 
   public isLoggedIn(): boolean {

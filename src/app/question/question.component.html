@@ -1,0 +1,10 @@
+<h2>Questions</h2>
+
+<ul class="questions">
+  <li *ngFor="let qs of questions">
+    <a routerLink="/detail/{{qs.id}}">
+      <span class="badge">{{qs.id}}</span> {{qs.question}}
+    </a>
+    <!-- <button class="delete" title="delete hero" (click)="delete(hero)">x</button> -->
+  </li>
+</ul>
